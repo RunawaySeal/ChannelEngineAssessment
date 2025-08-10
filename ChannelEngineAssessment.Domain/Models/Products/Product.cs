@@ -6,6 +6,7 @@ namespace ChannelEngineAssessment.Domain.Models.Products
   {
     public string MerchantProductNo { get; set; }
     public string Name { get; set; }
+    public int Stock { get; set; }
     public int TotalQuantitySold { get; set; }
   }
 }

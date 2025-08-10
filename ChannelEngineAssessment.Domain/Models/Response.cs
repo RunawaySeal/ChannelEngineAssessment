@@ -8,5 +8,6 @@
     public int TotalCount { get; set; }
     public int ItemsPerPage { get; set; }
     public IEnumerable<T> Content { get; set; } = Enumerable.Empty<T>();
+    public bool Success { get; set; } = false;
   }
 }
