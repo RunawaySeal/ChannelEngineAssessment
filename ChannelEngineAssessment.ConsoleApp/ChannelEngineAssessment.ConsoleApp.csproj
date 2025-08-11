@@ -7,4 +7,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ChannelEngineAssessment.Domain\ChannelEngineAssessment.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
