@@ -23,6 +23,7 @@ namespace ChannelEngineAssessment.Domain.ApplicationServices.Products
                                       {
                                         TotalQuantitySold = ol.Sum(item => item.Quantity),
                                         MerchantProductNo = ol.Key,
+                                        GTIN = ol.FirstOrDefault()?.Gtin,
                                         Name = ol.First().Description
                                       })
                                       .OrderBy(p => p.TotalQuantitySold)
@@ -37,7 +38,7 @@ namespace ChannelEngineAssessment.Domain.ApplicationServices.Products
       }
     }
 
-    public async Task<IEnumerable<ProductCreationResult>?> SetProductStockAsync(List<Product> products, int stock)
+    public async Task<ProductCreationResult?> SetProductStockAsync(List<Product> products, int stock)
     {
       try
       {

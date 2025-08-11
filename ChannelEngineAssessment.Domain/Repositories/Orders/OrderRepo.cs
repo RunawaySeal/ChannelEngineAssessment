@@ -1,4 +1,4 @@
-﻿using ChannelEngineAssessment.Domain.Models;
+﻿using ChannelEngineAssessment.Domain.Models.ApiResponses;
 using ChannelEngineAssessment.Domain.Models.Orders;
 using Newtonsoft.Json;
 
@@ -6,7 +6,7 @@ namespace ChannelEngineAssessment.Domain.Repositories.Orders
 {
   public class OrderRepo : BaseRepo, IOrderRepo
   {
-    public async Task<Response<Order>?> GetOrdersAsync(OrderFilters? filters)
+    public async Task<ListResponse<Order>?> GetOrdersAsync(OrderFilters? filters)
     {
       // Build the URL with the filters
       var orderApiUrl = $"{BaseUrl}/orders";
@@ -20,7 +20,7 @@ namespace ChannelEngineAssessment.Domain.Repositories.Orders
       using var httpClient = new HttpClient();
       var orderJson = await httpClient.GetStringAsync(orderApiUrl);
 
-      return JsonConvert.DeserializeObject<Response<Order>>(orderJson);
+      return JsonConvert.DeserializeObject<ListResponse<Order>>(orderJson);
     }
   }
 }

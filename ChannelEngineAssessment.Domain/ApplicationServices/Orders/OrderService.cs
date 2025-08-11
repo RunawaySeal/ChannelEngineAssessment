@@ -1,4 +1,4 @@
-﻿using ChannelEngineAssessment.Domain.Models;
+﻿using ChannelEngineAssessment.Domain.Models.ApiResponses;
 using ChannelEngineAssessment.Domain.Models.Orders;
 using ChannelEngineAssessment.Domain.Repositories.Orders;
 using Serilog;
@@ -10,7 +10,7 @@ namespace ChannelEngineAssessment.Domain.ApplicationServices.Orders
   {
     private readonly IOrderRepo _orderRepo = orderRepo;
 
-    public async Task<Response<Order>?> GetOrdersAsync(OrderFilters filters)
+    public async Task<ListResponse<Order>?> GetOrdersAsync(OrderFilters filters)
     {
       try
       {

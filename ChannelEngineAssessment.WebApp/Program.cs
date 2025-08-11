@@ -1,7 +1,40 @@
+using ChannelEngineAssessment.Domain.ApplicationServices.Orders;
+using ChannelEngineAssessment.Domain.ApplicationServices.Products;
+using ChannelEngineAssessment.Domain.Repositories.Orders;
+using ChannelEngineAssessment.Domain.Repositories.Products;
+using Serilog;
+
 var builder = WebApplication.CreateBuilder(args);
+var baseUrl = "https://api-dev.channelengine.net/api/v2";
+var apiKey = "541b989ef78ccb1bad630ea5b85c6ebff9ca3322";
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Register repositories with configuration
+builder.Services.AddScoped<IOrderRepo>(provider =>
+{
+  var repo = new OrderRepo()
+  {
+    BaseUrl = baseUrl,
+    ApiKey = apiKey
+  };
+  return repo;
+});
+builder.Services.AddScoped<IProductRepo>(provider =>
+{
+  var repo = new ProductRepo()
+  {
+    BaseUrl = baseUrl,
+    ApiKey = apiKey
+  };
+  return repo;
+});
+
+// Register application services
+builder.Services.AddScoped<OrderService>();
+builder.Services.AddScoped<ProductService>();
+builder.Services.AddSingleton(Log.Logger);
 
 var app = builder.Build();
 

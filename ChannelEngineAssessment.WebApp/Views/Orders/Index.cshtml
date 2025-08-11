@@ -1,0 +1,23 @@
+﻿@{
+  ViewData["Title"] = "Orders";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div id="order-list"></div>
+
+<script>
+  $(document).ready(() => {
+    loadOrders();
+  })
+
+  function loadOrders() {
+    $('#loader').show();
+
+    let url = '@Url.Action("List", "Orders")?status=0';
+
+    $('#order-list').load(url, () => {
+      $('#loader').hide();
+    })
+  }
+</script>
