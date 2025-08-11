@@ -45,3 +45,22 @@ foreach (var product in products)
 }
 
 Console.WriteLine($"------------------------------------------------------");
+Console.WriteLine($"Would you like to update the stock of Top Products to 25");
+Console.WriteLine($"Press 'Y' to continue or any other key to exit.");
+
+//If user agrees, update stock of top products to 25
+if (Console.ReadLine().ToLower() == "y")
+{
+  var response = await productService.SetProductStockAsync(products.ToList(), 25);
+  Console.WriteLine($"Stock Update Response: Accepted Changes: {response.AcceptedCount}, Rejected Changes: {response.RejectedCount}");
+  foreach(var message in response.ProductMessages)
+  {
+    Console.WriteLine($"- {message.Name}");
+    foreach(var error in message.Errors)
+    {
+      Console.WriteLine($"-- Error: {error}");
+    }
+  }
+}
+else
+  Environment.Exit(0);
