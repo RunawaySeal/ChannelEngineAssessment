@@ -1,0 +1,32 @@
+﻿@using ChannelEngineAssessment.WebApp.Models.Orders
+@model OrdersViewModel;
+
+<table class="table table-striped" style="width:100%">
+  <thead>
+    <tr>
+      <th>ChannelName</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (var order in Model.Orders)
+    {
+      <tr>
+        <td>
+          @order.ChannelName
+        </td>
+        <td>
+          @order.Status
+        </td>
+      </tr>
+    }
+    @if (!Model.Orders.Any())
+    {
+      <tr>
+        <td>No orders found...</td>
+        <td></td>
+        <td></td>
+      </tr>
+    }
+  </tbody>
+</table>
