@@ -1,8 +1,8 @@
-﻿namespace ChannelEngineAssessment.Domain.Models
+﻿namespace ChannelEngineAssessment.Domain.Models.ApiResponses
 {
   // Basic response object that allows you to return a list of type as well and the total results. 
   // This can be used for pagination or other additional information.
-  public class Response<T>
+  public class ListResponse<T>
   {
     public int Count { get; set; }
     public int TotalCount { get; set; }

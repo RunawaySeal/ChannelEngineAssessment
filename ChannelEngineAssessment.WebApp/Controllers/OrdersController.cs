@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ChannelEngineAssessment.WebApp.Controllers
 {
-  public class OrdersController(ILogger logger, OrderService orderService) : Controller
+  public class OrdersController(ILogger<OrdersController> logger, OrderService orderService) : Controller
   {
-    private readonly ILogger _logger = logger;
+    private readonly ILogger<OrdersController> _logger = logger;
     private readonly OrderService _orderService = orderService;
 
     public IActionResult Index()

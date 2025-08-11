@@ -1,23 +1,24 @@
-﻿using ChannelEngineAssessment.Domain.Models;
+﻿using ChannelEngineAssessment.Domain.Models.ApiResponses;
 using ChannelEngineAssessment.Domain.Models.Products;
+using Newtonsoft.Json;
 using System.Net.Http.Json;
 
 namespace ChannelEngineAssessment.Domain.Repositories.Products
 {
   public class ProductRepo : BaseRepo, IProductRepo
   {
-    public async Task<Response<ProductCreationResult>?> UpdateProduct(ProductUpdate? product)
+    public async Task<UpdateResponse<ProductCreationResult>?> UpdateProduct(ProductUpdate? product)
     {
       // Build the URL with the filters
       var updateProductApiUrl = $"{BaseUrl}/products";
       updateProductApiUrl += $"?apikey={ApiKey}";
 
-      // Get Orders from the API
+      // Update the product attributes with the API
       using var httpClient = new HttpClient();
       var response = await httpClient.PatchAsync(updateProductApiUrl, JsonContent.Create(product));
-      var productUpdateJson = await response.Content.ReadFromJsonAsync<Response<ProductCreationResult>>();
+      var productUpdateJson = await response.Content.ReadAsStringAsync();
 
-      return productUpdateJson ?? default;
+      return JsonConvert.DeserializeObject<UpdateResponse<ProductCreationResult>>(productUpdateJson);
     }
   }
 }

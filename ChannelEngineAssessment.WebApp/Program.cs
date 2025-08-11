@@ -1,5 +1,7 @@
 using ChannelEngineAssessment.Domain.ApplicationServices.Orders;
+using ChannelEngineAssessment.Domain.ApplicationServices.Products;
 using ChannelEngineAssessment.Domain.Repositories.Orders;
+using ChannelEngineAssessment.Domain.Repositories.Products;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,9 +21,19 @@ builder.Services.AddScoped<IOrderRepo>(provider =>
   };
   return repo;
 });
+builder.Services.AddScoped<IProductRepo>(provider =>
+{
+  var repo = new ProductRepo()
+  {
+    BaseUrl = baseUrl,
+    ApiKey = apiKey
+  };
+  return repo;
+});
 
 // Register application services
 builder.Services.AddScoped<OrderService>();
+builder.Services.AddScoped<ProductService>();
 builder.Services.AddSingleton(Log.Logger);
 
 var app = builder.Build();

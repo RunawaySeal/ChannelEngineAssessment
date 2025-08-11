@@ -30,3 +30,110 @@
     }
   </tbody>
 </table>
+
+<h3>Top Products</h3>
+
+<div id="responseMessages"></div>
+<table class="table table-striped" style="width:100%">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>GTIN</th>
+      <th>Total Quantity Sold</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (var product in Model.TopProducts)
+    {
+      <tr>
+        <td>
+          @product.Name
+        </td>
+        <td>
+          @product.GTIN
+        </td>
+        <td>
+          @product.TotalQuantitySold
+        </td>
+        <td>
+          <button class="btn btn-primary" onclick="ShowUpdateStockModal('@product.Name', '@product.MerchantProductNo')">Update Stock</button>
+        </td>
+      </tr>
+    }
+    @if (!Model.Orders.Any())
+    {
+      <tr>
+        <td>No orders found...</td>
+        <td></td>
+        <td></td>
+      </tr>
+    }
+  </tbody>
+</table>
+
+<div id="updateStockModal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="productHeading">Update Stock</h5>
+      </div>
+      <div class="modal-body">
+        <Label>Quantity</Label>
+        <input id="quantity" type="number" />
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" onclick="UpdateProductStock()">Update</button>
+        <button type="button" class="btn btn-secondary" onclick="CancelUpdate()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<input type="hidden" id="merchantProductNo" />
+
+<script>
+  function ShowUpdateStockModal(ProductName, MerchantProductNo) {
+    $("#productHeading").text(`Update Stock for ${ProductName}`);
+    $("#merchantProductNo").val(MerchantProductNo);
+
+    $('#updateStockModal').show();
+  }
+
+  function UpdateProductStock() {
+    $('#loader').show();
+
+    console.log( $("#MerchantProductNo").val());
+    $.ajax({
+      url: '@Url.Action("UpdateStock", "Products")',
+      type: 'POST',
+      data: {
+        MerchantProductNo: $("#merchantProductNo").val(),
+        Quantity: $("#quantity").val()
+      },
+      success: function (response) {
+          $('#loader').hide();
+          showAlert(true, response);
+      },
+      error: function () {
+          $('#loader').hide();
+          showAlert(false, response);
+      }
+     });
+
+    $('#updateStockModal').hide();
+  }
+
+  function showAlert(success, message){
+    const alertClass = success ? 'alert-success' : 'alert-warning';
+    $("#responseMessages").append(`<div class="alert ${alertClass} alert-dismissible fade show" role="alert"> ` +
+                                    `${message}` +
+                                    '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                                  '</div>');
+  }
+
+  function CancelUpdate() {
+    $("#MerchantProductNo").val("");
+    $('#updateStockModal').hide();
+  }
+</script>
