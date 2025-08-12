@@ -26,7 +26,7 @@ namespace ChannelEngineAssessment.Domain.ApplicationServices.Products
                                         GTIN = ol.FirstOrDefault()?.Gtin,
                                         Name = ol.First().Description
                                       })
-                                      .OrderBy(p => p.TotalQuantitySold)
+                                      .OrderByDescending(p => p.TotalQuantitySold)
                                       .Take(count);
 
         return products;

@@ -1,6 +1,4 @@
-﻿using ChannelEngineAssessment.Domain.Models.Orders;
-
-namespace ChannelEngineAssessment.Domain.Models.Products
+﻿namespace ChannelEngineAssessment.Domain.Models.Products
 {
   public class Product
   {
