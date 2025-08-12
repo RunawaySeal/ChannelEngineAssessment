@@ -14,6 +14,8 @@ namespace ChannelEngineAssessment.Tests
                 new() {
                     Id = 1,
                     Status = OrderStatus.IN_PROGRESS,
+                    ChannelName = "Test Channel 1",
+                    GlobalChannelName = "Global Channel 1",
                     Lines =
                     [
                         new() { MerchantProductNo = "PROD001", Description = "Product A", Gtin = "GTIN001", Quantity = 20 },
@@ -24,6 +26,8 @@ namespace ChannelEngineAssessment.Tests
                 new() {
                     Id = 2,
                     Status = OrderStatus.IN_PROGRESS,
+                    ChannelName = "Test Channel 2",
+                    GlobalChannelName = "Global Channel 2",
                     Lines =
                     [
                         new() { MerchantProductNo = "PROD001", Description = "Product A", Gtin = "GTIN001", Quantity = 30 }, // Total: 50
@@ -35,6 +39,8 @@ namespace ChannelEngineAssessment.Tests
                 new() {
                     Id = 3,
                     Status = OrderStatus.IN_PROGRESS,
+                    ChannelName = "Test Channel 3",
+                    GlobalChannelName = "Global Channel 3",
                     Lines = 
                     [
                         new() { MerchantProductNo = "PROD003", Description = "Product C", Gtin = "GTIN003", Quantity = 20 }, // Total: 30
