@@ -1,7 +1,5 @@
-﻿using ChannelEngineAssessment.Domain.Enums;
-using ChannelEngineAssessment.Domain.Models.Orders;
+﻿using ChannelEngineAssessment.Domain.Models.Orders;
 using ChannelEngineAssessment.Domain.Models.Products;
-using System.Diagnostics.Metrics;
 
 namespace ChannelEngineAssessment.WebApp.Models.Orders
 {
@@ -18,7 +16,7 @@ namespace ChannelEngineAssessment.WebApp.Models.Orders
                                                   GTIN = ol.FirstOrDefault()?.Gtin,
                                                   Name = ol.First().Description
                                                })
-                                              .OrderBy(p => p.TotalQuantitySold)
+                                              .OrderByDescending(p => p.TotalQuantitySold)
                                               .Take(5)
                                               .ToList();
   }

@@ -1,8 +1,4 @@
-﻿using ChannelEngineAssessment.Domain.ApplicationServices.Orders;
-using ChannelEngineAssessment.Domain.ApplicationServices.Products;
-using ChannelEngineAssessment.Domain.Enums;
-using ChannelEngineAssessment.Domain.Models.Orders;
-using ChannelEngineAssessment.WebApp.Models.Products;
+﻿using ChannelEngineAssessment.Domain.ApplicationServices.Products;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChannelEngineAssessment.WebApp.Controllers
