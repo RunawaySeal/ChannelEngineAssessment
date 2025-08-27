@@ -1,4 +1,6 @@
 ﻿using ChannelEngineAssessment.Domain.ApplicationServices.Products;
+using ChannelEngineAssessment.Domain.Models.Offers;
+using ChannelEngineAssessment.Domain.Models.Products;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChannelEngineAssessment.WebApp.Controllers
@@ -9,18 +11,23 @@ namespace ChannelEngineAssessment.WebApp.Controllers
     private readonly ProductService _productService = productService;
 
     [HttpPost]
-    public async Task<ContentResult> UpdateStock(string merchantProductNo, int quantity)
+    public async Task<ContentResult> UpdateStock(string merchantProductNo, int stockLocationId, int quantity)
     {
       try
       {
-        var product = new Domain.Models.Products.Product
+        var product = new Product
         {
-          MerchantProductNo = merchantProductNo
+          MerchantProductNo = merchantProductNo,
+          StockLocation = new StockLocation
+          {
+            StockLocationId = stockLocationId,
+            Stock = quantity
+          }
         };
 
-        var updateResult = await _productService.SetProductStockAsync([product], quantity);
+        var updateResult = await _productService.SetProductStockAsync([product]);
 
-        if (_productService.HasError || (updateResult?.RejectedCount ?? 0) > 0)
+        if (_productService.HasError)
         {
           return Content($"Error updating stock: {_productService.LastErrorMessage}");
         }

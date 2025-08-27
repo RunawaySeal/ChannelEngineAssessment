@@ -1,4 +1,6 @@
-﻿namespace ChannelEngineAssessment.Domain.Models.Orders
+﻿using ChannelEngineAssessment.Domain.Models.Offers;
+
+namespace ChannelEngineAssessment.Domain.Models.Orders
 {
   public class OrderLine
   {
@@ -10,5 +12,6 @@
     public string MerchantProductNo { get; set; }
     public string Description { get; set; }
     public int Quantity { get; set; }
+    public StockLocation StockLocation { get; set; }
   }
 }

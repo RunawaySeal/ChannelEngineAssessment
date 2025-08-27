@@ -1,16 +1,17 @@
-﻿using ChannelEngineAssessment.Domain.Models.Orders;
+﻿using ChannelEngineAssessment.Domain.Models.Offers;
+using ChannelEngineAssessment.Domain.Models.Orders;
 using ChannelEngineAssessment.Domain.Models.Products;
+using ChannelEngineAssessment.Domain.Repositories.Offers;
 using ChannelEngineAssessment.Domain.Repositories.Orders;
-using ChannelEngineAssessment.Domain.Repositories.Products;
 using Serilog;
 using System.Net;
 
 namespace ChannelEngineAssessment.Domain.ApplicationServices.Products
 {
-  public class ProductService(ILogger logger, IOrderRepo orderRepo, IProductRepo productRepo) : BaseService(logger)
+  public class ProductService(ILogger logger, IOrderRepo orderRepo, IOffersRepo offersRepo) : BaseService(logger)
   {
     private readonly IOrderRepo _orderRepo = orderRepo;
-    private readonly IProductRepo _productRepo = productRepo;
+    private readonly IOffersRepo _offersRepo = offersRepo;
 
     public async Task<IEnumerable<Product>?> GetTopProductsAsync(OrderFilters? filters = null, int count = 5)
     {
@@ -24,7 +25,8 @@ namespace ChannelEngineAssessment.Domain.ApplicationServices.Products
                                         TotalQuantitySold = ol.Sum(item => item.Quantity),
                                         MerchantProductNo = ol.Key,
                                         GTIN = ol.FirstOrDefault()?.Gtin,
-                                        Name = ol.FirstOrDefault()?.Description ?? string.Empty
+                                        Name = ol.FirstOrDefault()?.Description ?? string.Empty,
+                                        StockLocation = ol.FirstOrDefault()?.StockLocation
                                       })
                                       .OrderByDescending(p => p.TotalQuantitySold)
                                       .Take(count);
@@ -38,19 +40,20 @@ namespace ChannelEngineAssessment.Domain.ApplicationServices.Products
       }
     }
 
-    public async Task<ProductCreationResult?> SetProductStockAsync(List<Product> products, int stock)
+    public async Task<StockUpdateResult?> SetProductStockAsync(IEnumerable<Product> products)
     {
       try
       {
-        // Basic Idea, might change when being used. 
-        products.ForEach(p => p.Stock = 25);
-        var productUpdateModel = new ProductUpdate()
+        var productUpdateModel = products.Select(p => new ProductStockUpdate()
         {
-          PropertiesToUpdate = new List<string> { nameof(Product.Stock) },
-          MerchantProductRequestModels = products
-        };
+          MerchantProductNo = p.MerchantProductNo,
+          StockLocations = new List<StockLocation>()
+          {
+            p.StockLocation
+          }
+        });
 
-        var response = await _productRepo.UpdateProduct(productUpdateModel);
+        var response = await _offersRepo.UpdateStock(productUpdateModel);
 
         return response.Content;
       }

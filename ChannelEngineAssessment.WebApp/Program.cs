@@ -1,5 +1,6 @@
 using ChannelEngineAssessment.Domain.ApplicationServices.Orders;
 using ChannelEngineAssessment.Domain.ApplicationServices.Products;
+using ChannelEngineAssessment.Domain.Repositories.Offers;
 using ChannelEngineAssessment.Domain.Repositories.Orders;
 using ChannelEngineAssessment.Domain.Repositories.Products;
 using Serilog;
@@ -21,6 +22,15 @@ builder.Services.AddHttpClient("ChannelEngine", client =>
 });
 
 // Register repositories with configuration
+builder.Services.AddScoped<IOffersRepo>(provider =>
+{
+  var httpClientFactory = provider.GetRequiredService<IHttpClientFactory>();
+  var httpClient = httpClientFactory.CreateClient("ChannelEngine");
+
+  var repo = new OffersRepo(httpClient) { ApiKey = apiKey };
+  return repo;
+});
+
 builder.Services.AddScoped<IOrderRepo>(provider =>
 {
   var httpClientFactory = provider.GetRequiredService<IHttpClientFactory>();
@@ -29,6 +39,7 @@ builder.Services.AddScoped<IOrderRepo>(provider =>
   var repo = new OrderRepo(httpClient) { ApiKey = apiKey };
   return repo;
 });
+
 builder.Services.AddScoped<IProductRepo>(provider =>
 {
   var httpClientFactory = provider.GetRequiredService<IHttpClientFactory>();

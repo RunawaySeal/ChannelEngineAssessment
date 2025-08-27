@@ -57,7 +57,7 @@
           @product.TotalQuantitySold
         </td>
         <td>
-          <button class="btn btn-primary" onclick="ShowUpdateStockModal('@product.Name', '@product.MerchantProductNo')">Update Stock</button>
+          <button class="btn btn-primary" onclick="ShowUpdateStockModal('@product.Name', '@product.MerchantProductNo', @product.StockLocation.StockLocationId)">Update Stock</button>
         </td>
       </tr>
     }
@@ -91,11 +91,13 @@
 </div>
 
 <input type="hidden" id="merchantProductNo" />
+<input type="hidden" id="stockLocationId" />
 
 <script>
-  function ShowUpdateStockModal(ProductName, MerchantProductNo) {
+  function ShowUpdateStockModal(ProductName, MerchantProductNo, StockLocationId) {
     $("#productHeading").text(`Update Stock for ${ProductName}`);
     $("#merchantProductNo").val(MerchantProductNo);
+    $("#stockLocationId").val(StockLocationId);
 
     $('#updateStockModal').show();
   }
@@ -109,7 +111,8 @@
       type: 'POST',
       data: {
         MerchantProductNo: $("#merchantProductNo").val(),
-        Quantity: $("#quantity").val()
+        Quantity: $("#quantity").val(),
+        StockLocationId: $("#stockLocationId").val()
       },
       success: function (response) {
           $('#loader').hide();

@@ -12,8 +12,8 @@ namespace ChannelEngineAssessment.Tests.Products
     {
       // Arrange
       var mockOrderRepo = new MockOrderRepo();
-      var mockProductRepo = new MockProductRepo();
-      var productService = new ProductService(null, mockOrderRepo, mockProductRepo);
+      var mockOffersRepo = new MockOffersRepo();
+      var productService = new ProductService(null, mockOrderRepo, mockOffersRepo);
 
       var orderFilters = new OrderFilters
       {
