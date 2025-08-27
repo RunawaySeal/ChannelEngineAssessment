@@ -20,7 +20,7 @@ namespace ChannelEngineAssessment.WebApp.Controllers
     {
       try
       {
-        var orderFilters = new OrderFilters { Statuses = new[] { (OrderStatus)status } };
+        var orderFilters = new OrderFilters { Statuses = [(OrderStatus)status] };
         var ordersResponse = await _orderService.GetOrdersAsync(orderFilters);
 
         if (_orderService.HasError)

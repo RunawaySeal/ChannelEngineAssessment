@@ -1,8 +1,10 @@
-﻿namespace ChannelEngineAssessment.Domain.Repositories
+﻿using System.Net.Http;
+
+namespace ChannelEngineAssessment.Domain.Repositories
 {
-  public abstract class BaseRepo
+  public abstract class BaseRepo(HttpClient httpClient)
   {
-    public string BaseUrl { get; set; } = string.Empty;
+    protected readonly HttpClient _httpClient = httpClient;
     public string ApiKey { get; set; } = string.Empty;
   }
 }

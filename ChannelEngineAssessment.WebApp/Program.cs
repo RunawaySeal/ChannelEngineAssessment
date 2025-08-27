@@ -11,23 +11,30 @@ var apiKey = "541b989ef78ccb1bad630ea5b85c6ebff9ca3322";
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+// Register HttpClient with configuration for ChannelEngine API
+builder.Services.AddHttpClient("ChannelEngine", client =>
+{
+  client.BaseAddress = new Uri("https://api-dev.channelengine.net/api/v2/");
+  client.DefaultRequestHeaders.Add("User-Agent", "ChannelEngineAssessment/1.0");
+  // Add any other default headers or timeout configurations here
+  client.Timeout = TimeSpan.FromSeconds(30);
+});
+
 // Register repositories with configuration
 builder.Services.AddScoped<IOrderRepo>(provider =>
 {
-  var repo = new OrderRepo()
-  {
-    BaseUrl = baseUrl,
-    ApiKey = apiKey
-  };
+  var httpClientFactory = provider.GetRequiredService<IHttpClientFactory>();
+  var httpClient = httpClientFactory.CreateClient("ChannelEngine");
+
+  var repo = new OrderRepo(httpClient) { ApiKey = apiKey };
   return repo;
 });
 builder.Services.AddScoped<IProductRepo>(provider =>
 {
-  var repo = new ProductRepo()
-  {
-    BaseUrl = baseUrl,
-    ApiKey = apiKey
-  };
+  var httpClientFactory = provider.GetRequiredService<IHttpClientFactory>();
+  var httpClient = httpClientFactory.CreateClient("ChannelEngine");
+
+  var repo = new ProductRepo(httpClient) { ApiKey = apiKey };
   return repo;
 });
 
@@ -41,9 +48,9 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+  app.UseExceptionHandler("/Home/Error");
+  // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+  app.UseHsts();
 }
 
 app.UseHttpsRedirection();

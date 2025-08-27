@@ -14,8 +14,8 @@ namespace ChannelEngineAssessment.WebApp.Models.Orders
                                                   TotalQuantitySold = ol.Sum(item => item.Quantity),
                                                   MerchantProductNo = ol.Key,
                                                   GTIN = ol.FirstOrDefault()?.Gtin,
-                                                  Name = ol.First().Description
-                                               })
+                                                  Name = ol.FirstOrDefault()?.Description ?? string.Empty
+                                              })
                                               .OrderByDescending(p => p.TotalQuantitySold)
                                               .Take(5)
                                               .ToList();

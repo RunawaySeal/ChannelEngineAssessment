@@ -8,9 +8,13 @@ using ChannelEngineAssessment.Domain.Repositories.Products;
 var apiKey = "541b989ef78ccb1bad630ea5b85c6ebff9ca3322";
 var baseUrl = "https://api-dev.channelengine.net/api/v2";
 
+using var httpClient = new HttpClient();
+httpClient.BaseAddress = new Uri(baseUrl);
+httpClient.DefaultRequestHeaders.Add("User-Agent", "ChannelEngineAssessment/1.0");
+
 //Repositories
-var orderRepo = new OrderRepo() { ApiKey = apiKey, BaseUrl = baseUrl };
-var productsRepo = new ProductRepo() { ApiKey = apiKey, BaseUrl = baseUrl };
+var orderRepo = new OrderRepo(httpClient) { ApiKey = apiKey };
+var productsRepo = new ProductRepo(httpClient) { ApiKey = apiKey };
 
 
 //Services
